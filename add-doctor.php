@@ -5,11 +5,28 @@ include('include/config.php');
 include('include/checklogin.php');
 check_login();
 
+if(isset($_POST['submit']))
+{
+	$docspecialization=$_POST['Doctorspecialization'];
+$docname=$_POST['docname'];
+$docaddress=$_POST['clinicaddress'];
+$docfees=$_POST['docfees'];
+$doccontactno=$_POST['doccontact'];
+$docemail=$_POST['docemail'];
+$password=md5($_POST['npass']);
+$sql=mysql_query("insert into doctors(specilization,doctorName,address,docFees,contactno,docEmail,password) values('$docspecialization','$docname','$docaddress','$docfees','$doccontactno','$docemail','$password')");
+if($sql)
+{
+echo "<script>alert('Doctor info added Successfully');</script>";
+echo "<script type='text/javascript'> document.location = 'location:Manage-doctors.php'; </script>";
+
+}
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>Admin  | Dashboard</title>
+		<title>Admin | Add Doctor</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 		<meta name="apple-mobile-web-app-capable" content="yes">
@@ -30,7 +47,18 @@ check_login();
 		<link rel="stylesheet" href="assets/css/styles.css">
 		<link rel="stylesheet" href="assets/css/plugins.css">
 		<link rel="stylesheet" href="assets/css/themes/theme-1.css" id="skin_color" />
-
+<script type="text/javascript">
+function valid()
+{
+ if(document.adddoc.npass.value!= document.adddoc.cfpass.value)
+{
+alert("Password and Confirm Password Field do not match  !!");
+document.adddoc.cfpass.focus();
+return false;
+}
+return true;
+}
+</script>
 
 	</head>
 	<body>
@@ -47,81 +75,126 @@ check_login();
 						<section id="page-title">
 							<div class="row">
 								<div class="col-sm-8">
-									<h1 class="mainTitle">Admin | Dashboard</h1>
+									<h1 class="mainTitle">Admin | Add Doctor</h1>
 																	</div>
 								<ol class="breadcrumb">
 									<li>
 										<span>Admin</span>
 									</li>
 									<li class="active">
-										<span>Dashboard</span>
+										<span>Add Doctor</span>
 									</li>
 								</ol>
 							</div>
 						</section>
 						<!-- end: PAGE TITLE -->
 						<!-- start: BASIC EXAMPLE -->
-							<div class="container-fluid container-fullw bg-white">
+						<div class="container-fluid container-fullw bg-white">
 							<div class="row">
-								<div class="col-sm-4">
-									<div class="panel panel-white no-radius text-center">
-										<div class="panel-body">
-											<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-smile-o fa-stack-1x fa-inverse"></i> </span>
-											<h2 class="StepTitle">Manage Patients</h2>
-											
-											<p class="links cl-effect-1">
-												<a href="manage-users.php">
-												<?php $result = mysql_query("SELECT * FROM users ");
-$num_rows = mysql_num_rows($result);
+								<div class="col-md-12">
+									
+									<div class="row margin-top-30">
+										<div class="col-lg-8 col-md-12">
+											<div class="panel panel-white">
+												<div class="panel-heading">
+													<h5 class="panel-title">Add Doctor</h5>
+												</div>
+												<div class="panel-body">
+									
+													<form role="form" name="adddoc" method="post" onSubmit="return valid();">
+														<div class="form-group">
+															<label for="DoctorSpecialization">
+																Doctor Specialization
+															</label>
+							<select name="Doctorspecialization" class="form-control" required="required">
+																<option value="">Select Specialization</option>
+<?php $ret=mysql_query("select * from doctorspecilization");
+while($row=mysql_fetch_array($ret))
 {
 ?>
-											Total Patients :<?php echo htmlentities($num_rows);  } ?>		
-												</a>
-											</p>
+																<option value="<?php echo htmlentities($row['specilization']);?>">
+																	<?php echo htmlentities($row['specilization']);?>
+																</option>
+																<?php } ?>
+																
+															</select>
+														</div>
+
+<div class="form-group">
+															<label for="doctorname">
+																 Doctor Name
+															</label>
+					<input type="text" name="docname" class="form-control"  placeholder="Enter Doctor Name">
+														</div>
+
+
+<div class="form-group">
+															<label for="address">
+																 Doctor Clinic Address
+															</label>
+					<textarea name="clinicaddress" class="form-control"  placeholder="Enter Doctor Clinic Address"></textarea>
+														</div>
+<div class="form-group">
+															<label for="fess">
+																 Doctor Consultancy Fees
+															</label>
+					<input type="text" name="docfees" class="form-control"  placeholder="Enter Doctor Consultancy Fees">
+														</div>
+	
+<div class="form-group">
+									<label for="fess">
+																 Doctor Contact no
+															</label>
+					<input type="text" name="doccontact" class="form-control"  placeholder="Enter Doctor Contact no">
+														</div>
+
+<div class="form-group">
+									<label for="fess">
+																 Doctor Email
+															</label>
+					<input type="email" name="docemail" class="form-control"  placeholder="Enter Doctor Email id">
+														</div>
+
+
+
+														
+														<div class="form-group">
+															<label for="exampleInputPassword1">
+																 Password
+															</label>
+					<input type="password" name="npass" class="form-control"  placeholder="New Password" required="required">
+														</div>
+														
+<div class="form-group">
+															<label for="exampleInputPassword2">
+																Confirm Password
+															</label>
+									<input type="password" name="cfpass" class="form-control"  placeholder="Confirm Password" required="required">
+														</div>
+														
+														
+														
+														<button type="submit" name="submit" class="btn btn-o btn-primary">
+															Submit
+														</button>
+													</form>
+												</div>
+											</div>
 										</div>
-									</div>
-								</div>
-								<div class="col-sm-4">
-									<div class="panel panel-white no-radius text-center">
-										<div class="panel-body">
-											<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-users fa-stack-1x fa-inverse"></i> </span>
-											<h2 class="StepTitle">Manage Doctors</h2>
-										
-											<p class="cl-effect-1">
-												<a href="manage-doctors.php">
-												<?php $result1 = mysql_query("SELECT * FROM doctors ");
-$num_rows1 = mysql_num_rows($result1);
-{
-?>
-											Total Doctors :<?php echo htmlentities($num_rows1);  } ?>		
-												</a>
+											
+											</div>
+										</div>
+									<div class="col-lg-12 col-md-12">
+											<div class="panel panel-white">
 												
-											</p>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-4">
-									<div class="panel panel-white no-radius text-center">
-										<div class="panel-body">
-											<span class="fa-stack fa-2x"> <i class="fa fa-square fa-stack-2x text-primary"></i> <i class="fa fa-terminal fa-stack-1x fa-inverse"></i> </span>
-											<h2 class="StepTitle"> Appointments</h2>
-											
-											<p class="links cl-effect-1">
-												<a href="book-appointment.php">
-													<a href="appointment-history.php">
-												<?php $sql= mysql_query("SELECT * FROM appointment");
-$num_rows2 = mysql_num_rows($sql);
-{
-?>
-											Total Appointments :<?php echo htmlentities($num_rows2);  } ?>	
-												</a>
-												</a>
-											</p>
+												
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
+						<!-- end: BASIC EXAMPLE -->
 			
 					
 					

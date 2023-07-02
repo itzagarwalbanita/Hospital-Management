@@ -8,11 +8,11 @@ date_default_timezone_set('Asia/Kolkata');// change according timezone
 $currentTime = date( 'd-m-Y h:i:s A', time () );
 if(isset($_POST['submit']))
 {
-$sql=mysql_query("SELECT password FROM  users where password='".md5($_POST['cpass'])."' && email='".$_SESSION['login']."'");
+$sql=mysql_query("SELECT password FROM  admin where password='".$_POST['cpass']."' && username='".$_SESSION['login']."'");
 $num=mysql_fetch_array($sql);
 if($num>0)
 {
- $con=mysql_query("update users set password='".md5($_POST['npass'])."', updationDate='$currentTime' where email='".$_SESSION['login']."'");
+ $con=mysql_query("update admin set password='".$_POST['npass']."', updationDate='$currentTime' where username='".$_SESSION['login']."'");
 $_SESSION['msg1']="Password Changed Successfully !!";
 }
 else
@@ -24,7 +24,7 @@ $_SESSION['msg1']="Old Password not match !!";
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>User  | change Password</title>
+		<title>Admin | change Password</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 		<meta name="apple-mobile-web-app-capable" content="yes">
@@ -83,7 +83,8 @@ return true;
 			<div class="app-content">
 				
 						<?php include('include/header.php');?>
-						
+		
+				</header>
 				<!-- end: TOP NAVBAR -->
 				<div class="main-content" >
 					<div class="wrap-content container" id="container">
@@ -91,11 +92,11 @@ return true;
 						<section id="page-title">
 							<div class="row">
 								<div class="col-sm-8">
-									<h1 class="mainTitle">User | Change Password</h1>
+									<h1 class="mainTitle">Admin | Change Password</h1>
 																	</div>
 								<ol class="breadcrumb">
 									<li>
-										<span>User</span>
+										<span>Admin</span>
 									</li>
 									<li class="active">
 										<span>Change Password</span>
@@ -151,10 +152,16 @@ return true;
 											
 											</div>
 										</div>
-									
+									<div class="col-lg-12 col-md-12">
+											<div class="panel panel-white">
+												
+												
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
-						
+						</div>
 						<!-- end: BASIC EXAMPLE -->
 			
 					
